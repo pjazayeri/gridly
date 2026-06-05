@@ -1,7 +1,7 @@
-APP       = WindowManager
+APP       = Gridly
 XCPROJ    = $(APP).xcodeproj
 BUILD     = build
-BUNDLE_ID = com.windowmanager.app
+BUNDLE_ID = com.gridly.app
 VERSION  := $(shell /usr/libexec/PlistBuddy -c "Print CFBundleShortVersionString" Resources/Info.plist 2>/dev/null || echo "1.0")
 
 # ── Distribution credentials ────────────────────────────────────────────────

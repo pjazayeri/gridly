@@ -14,7 +14,7 @@ final class PreferencesWindowController: NSWindowController {
             backing:     .buffered,
             defer:       false
         )
-        window.title = "WindowManager"
+        window.title = "Gridly"
         window.contentView = hosting
         window.center()
         window.isReleasedWhenClosed = false   // keep alive for next open

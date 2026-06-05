@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
     <key>CFBundleIdentifier</key>
-    <string>com.windowmanager.app</string>
+    <string>com.gridly.app</string>
     <key>CFBundleName</key>
-    <string>WindowManager</string>
+    <string>Gridly</string>
     <key>CFBundleShortVersionString</key>
     <string>1.0</string>
     <key>CFBundleVersion</key>
@@ -16,6 +16,6 @@
     <key>LSUIElement</key>
     <true/>
     <key>NSAccessibilityUsageDescription</key>
-    <string>WindowManager needs Accessibility access to move and resize windows.</string>
+    <string>Gridly needs Accessibility access to move and resize windows.</string>
 </dict>
 </plist>

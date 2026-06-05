@@ -11,6 +11,11 @@ enum SnapPosition {
     case leftThird, centerThird, rightThird
     // Two-thirds
     case leftTwoThirds, rightTwoThirds
+    // 3×3 grid — `digit` is the numeric-keypad key (1…9), laid out spatially:
+    //   7 8 9  (top)
+    //   4 5 6  (middle)
+    //   1 2 3  (bottom)
+    case grid(Int)
     // Multi-display
     case nextDisplay, previousDisplay
 }
@@ -67,6 +72,16 @@ enum ScreenUtils {
             return ax(NSRect(x: f.minX,                         y: f.minY, width: 2 * f.width / 3,   height: f.height))
         case .rightTwoThirds:
             return ax(NSRect(x: f.minX + f.width / 3,           y: f.minY, width: 2 * f.width / 3,   height: f.height))
+
+        case .grid(let digit):
+            // Keypad digit → column (0…2 left→right) and row (0 bottom … 2 top).
+            let col          = (digit - 1) % 3
+            let rowFromBottom = (digit - 1) / 3
+            let cw = f.width  / 3
+            let ch = f.height / 3
+            return ax(NSRect(x: f.minX + CGFloat(col) * cw,
+                             y: f.minY + CGFloat(rowFromBottom) * ch,
+                             width: cw, height: ch))
 
         case .nextDisplay, .previousDisplay:
             return nil

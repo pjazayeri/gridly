@@ -15,10 +15,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "A9176160CCF7A5A291824807"
-               BuildableName = "WindowManager.app"
-               BlueprintName = "WindowManager"
-               ReferencedContainer = "container:WindowManager.xcodeproj">
+               BlueprintIdentifier = "920DDF79E62B841762B74CF4"
+               BuildableName = "Gridly.app"
+               BlueprintName = "Gridly"
+               ReferencedContainer = "container:Gridly.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -32,10 +32,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "A9176160CCF7A5A291824807"
-            BuildableName = "WindowManager.app"
-            BlueprintName = "WindowManager"
-            ReferencedContainer = "container:WindowManager.xcodeproj">
+            BlueprintIdentifier = "920DDF79E62B841762B74CF4"
+            BuildableName = "Gridly.app"
+            BlueprintName = "Gridly"
+            ReferencedContainer = "container:Gridly.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <Testables>
@@ -57,10 +57,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "A9176160CCF7A5A291824807"
-            BuildableName = "WindowManager.app"
-            BlueprintName = "WindowManager"
-            ReferencedContainer = "container:WindowManager.xcodeproj">
+            BlueprintIdentifier = "920DDF79E62B841762B74CF4"
+            BuildableName = "Gridly.app"
+            BlueprintName = "Gridly"
+            ReferencedContainer = "container:Gridly.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <CommandLineArguments>
@@ -76,10 +76,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "A9176160CCF7A5A291824807"
-            BuildableName = "WindowManager.app"
-            BlueprintName = "WindowManager"
-            ReferencedContainer = "container:WindowManager.xcodeproj">
+            BlueprintIdentifier = "920DDF79E62B841762B74CF4"
+            BuildableName = "Gridly.app"
+            BlueprintName = "Gridly"
+            ReferencedContainer = "container:Gridly.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <CommandLineArguments>

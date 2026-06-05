@@ -19,7 +19,45 @@ enum WindowMover {
         }
     }
 
+    /// Distributes every standard window across the 3×3 grid, cycling through
+    /// cells 1…9 so each window lands on a grid spot (cells repeat past 9 windows).
+    /// Each window is placed on the grid of the screen it currently occupies.
+    static func arrangeAllToGrid() {
+        var index = 0
+        for app in NSWorkspace.shared.runningApplications where app.activationPolicy == .regular {
+            let axApp = AXUIElementCreateApplication(app.processIdentifier)
+            var winRef: CFTypeRef?
+            guard AXUIElementCopyAttributeValue(axApp, kAXWindowsAttribute as CFString, &winRef) == .success,
+                  let windows = winRef as? [AXUIElement] else { continue }
+
+            for window in windows where isArrangeable(window) {
+                let screen = ScreenUtils.screen(containing: window)
+                let digit  = (index % 9) + 1
+                if let frame = ScreenUtils.axFrame(for: .grid(digit), on: screen) {
+                    setFrame(of: window, to: frame)
+                }
+                index += 1
+            }
+        }
+    }
+
     // MARK: - Private
+
+    /// True for ordinary, non-minimized application windows (skips panels,
+    /// sheets, and minimized windows so the arrange pass leaves them alone).
+    private static func isArrangeable(_ window: AXUIElement) -> Bool {
+        var subroleRef: CFTypeRef?
+        guard AXUIElementCopyAttributeValue(window, kAXSubroleAttribute as CFString, &subroleRef) == .success,
+              (subroleRef as? String) == (kAXStandardWindowSubrole as String)
+        else { return false }
+
+        var minRef: CFTypeRef?
+        if AXUIElementCopyAttributeValue(window, kAXMinimizedAttribute as CFString, &minRef) == .success,
+           (minRef as? Bool) == true {
+            return false
+        }
+        return true
+    }
 
     private static func focusedWindow() -> AXUIElement? {
         guard let app = NSWorkspace.shared.frontmostApplication else { return nil }

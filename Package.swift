@@ -2,12 +2,12 @@
 import PackageDescription
 
 let package = Package(
-    name: "WindowManager",
+    name: "Gridly",
     platforms: [.macOS(.v14)],
     targets: [
         .executableTarget(
-            name: "WindowManager",
-            path: "Sources/WindowManager",
+            name: "Gridly",
+            path: "Sources/Gridly",
             resources: [.process("Assets.xcassets")]
         )
     ]

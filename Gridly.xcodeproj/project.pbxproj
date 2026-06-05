@@ -1,0 +1,340 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2286ED7AC13B8BD79014C4B8 /* PreferencesWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C2FBE688058940E0449512 /* PreferencesWindowController.swift */; };
+		2FAFC7DF64715929E9FCFA9B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36C2EB34E9249C0C32D776FB /* AppDelegate.swift */; };
+		3E84ABFDDF642D682E2857E4 /* HotKeyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C87CF6566F01AD418D288A7 /* HotKeyManager.swift */; };
+		5193D75DA10D879DA057728B /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9DE8A358C4C43667FB68C81 /* main.swift */; };
+		5E159D6D5129411E39D4C0A0 /* PreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0B96F72A06F3E6E931E915F /* PreferencesView.swift */; };
+		6BABED862AA60F24D2DF8CF2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0897D2AB389945A0E6E3277C /* Assets.xcassets */; };
+		86AB766C5BEC2C28E9BC3DD8 /* WindowMover.swift in Sources */ = {isa = PBXBuildFile; fileRef = A534CF6208D71832AE649488 /* WindowMover.swift */; };
+		9A600CC064D8E95F2FD9A0DF /* ScreenUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18FD454A421B5F2FA1DD7257 /* ScreenUtils.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		03C2FBE688058940E0449512 /* PreferencesWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesWindowController.swift; sourceTree = "<group>"; };
+		0897D2AB389945A0E6E3277C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		18FD454A421B5F2FA1DD7257 /* ScreenUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenUtils.swift; sourceTree = "<group>"; };
+		36C2EB34E9249C0C32D776FB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		6C87CF6566F01AD418D288A7 /* HotKeyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotKeyManager.swift; sourceTree = "<group>"; };
+		A534CF6208D71832AE649488 /* WindowMover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowMover.swift; sourceTree = "<group>"; };
+		B9DE8A358C4C43667FB68C81 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		E1EE242C7EB4E53E7F2EFA54 /* Gridly.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Gridly.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F0B96F72A06F3E6E931E915F /* PreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		21B3215ADCD819D2EB47C50F = {
+			isa = PBXGroup;
+			children = (
+				4340B020E4065A3C4847409F /* Sources */,
+				CFD1FE2C3F9BE58189A1FD68 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		395E3C9293D176AAC704E002 /* Gridly */ = {
+			isa = PBXGroup;
+			children = (
+				36C2EB34E9249C0C32D776FB /* AppDelegate.swift */,
+				0897D2AB389945A0E6E3277C /* Assets.xcassets */,
+				6C87CF6566F01AD418D288A7 /* HotKeyManager.swift */,
+				B9DE8A358C4C43667FB68C81 /* main.swift */,
+				F0B96F72A06F3E6E931E915F /* PreferencesView.swift */,
+				03C2FBE688058940E0449512 /* PreferencesWindowController.swift */,
+				18FD454A421B5F2FA1DD7257 /* ScreenUtils.swift */,
+				A534CF6208D71832AE649488 /* WindowMover.swift */,
+			);
+			path = Gridly;
+			sourceTree = "<group>";
+		};
+		4340B020E4065A3C4847409F /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				395E3C9293D176AAC704E002 /* Gridly */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		CFD1FE2C3F9BE58189A1FD68 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E1EE242C7EB4E53E7F2EFA54 /* Gridly.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		920DDF79E62B841762B74CF4 /* Gridly */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B19A20A40504659F02B00D68 /* Build configuration list for PBXNativeTarget "Gridly" */;
+			buildPhases = (
+				65A488495B34727714D8C427 /* Sources */,
+				7D6C71F78780A3D57C05129B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Gridly;
+			packageProductDependencies = (
+			);
+			productName = Gridly;
+			productReference = E1EE242C7EB4E53E7F2EFA54 /* Gridly.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		86699587385863B8EC7950D2 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					920DDF79E62B841762B74CF4 = {
+						ProvisioningStyle = Manual;
+					};
+				};
+			};
+			buildConfigurationList = 00182C4DC88269CF3EEAEA28 /* Build configuration list for PBXProject "Gridly" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 21B3215ADCD819D2EB47C50F;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = CFD1FE2C3F9BE58189A1FD68 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				920DDF79E62B841762B74CF4 /* Gridly */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		7D6C71F78780A3D57C05129B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6BABED862AA60F24D2DF8CF2 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		65A488495B34727714D8C427 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2FAFC7DF64715929E9FCFA9B /* AppDelegate.swift in Sources */,
+				3E84ABFDDF642D682E2857E4 /* HotKeyManager.swift in Sources */,
+				5E159D6D5129411E39D4C0A0 /* PreferencesView.swift in Sources */,
+				2286ED7AC13B8BD79014C4B8 /* PreferencesWindowController.swift in Sources */,
+				9A600CC064D8E95F2FD9A0DF /* ScreenUtils.swift in Sources */,
+				86AB766C5BEC2C28E9BC3DD8 /* WindowMover.swift in Sources */,
+				5193D75DA10D879DA057728B /* main.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		258D5FEF8072897FB506E9B8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.9;
+			};
+			name = Debug;
+		};
+		93E1E29C9D7517576F303BED /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGNING_ALLOWED = YES;
+				CODE_SIGNING_REQUIRED = NO;
+				CODE_SIGN_ENTITLEMENTS = Gridly.entitlements;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = Resources/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.gridly.app;
+				PRODUCT_NAME = Gridly;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		E2F21523B6201CD496D7B107 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.9;
+			};
+			name = Release;
+		};
+		ECA79037CDBAB21227D4DDD7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGNING_ALLOWED = YES;
+				CODE_SIGNING_REQUIRED = NO;
+				CODE_SIGN_ENTITLEMENTS = Gridly.entitlements;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = Resources/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.gridly.app;
+				PRODUCT_NAME = Gridly;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		00182C4DC88269CF3EEAEA28 /* Build configuration list for PBXProject "Gridly" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				258D5FEF8072897FB506E9B8 /* Debug */,
+				E2F21523B6201CD496D7B107 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		B19A20A40504659F02B00D68 /* Build configuration list for PBXNativeTarget "Gridly" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ECA79037CDBAB21227D4DDD7 /* Debug */,
+				93E1E29C9D7517576F303BED /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 86699587385863B8EC7950D2 /* Project object */;
+}

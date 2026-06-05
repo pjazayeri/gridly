@@ -2,7 +2,7 @@
 // Run from the repo root: swift scripts/generate_icon.swift
 import Cocoa
 
-let outputDir = "Sources/WindowManager/Assets.xcassets/AppIcon.appiconset"
+let outputDir = "Sources/Gridly/Assets.xcassets/AppIcon.appiconset"
 
 // MARK: - Drawing
 

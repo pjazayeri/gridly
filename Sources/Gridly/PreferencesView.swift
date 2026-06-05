@@ -38,6 +38,18 @@ private let shortcutGroups: [ShortcutGroup] = [
         ShortcutEntry(action: "Left Two-Thirds",  shortcut: "⌃⌥E"),
         ShortcutEntry(action: "Right Two-Thirds", shortcut: "⌃⌥T"),
     ]),
+    ShortcutGroup(title: "3×3 Grid (keypad)", entries: [
+        ShortcutEntry(action: "Top Left",      shortcut: "⌃⌥7"),
+        ShortcutEntry(action: "Top Center",    shortcut: "⌃⌥8"),
+        ShortcutEntry(action: "Top Right",     shortcut: "⌃⌥9"),
+        ShortcutEntry(action: "Middle Left",   shortcut: "⌃⌥4"),
+        ShortcutEntry(action: "Middle Center", shortcut: "⌃⌥5"),
+        ShortcutEntry(action: "Middle Right",  shortcut: "⌃⌥6"),
+        ShortcutEntry(action: "Bottom Left",   shortcut: "⌃⌥1"),
+        ShortcutEntry(action: "Bottom Center", shortcut: "⌃⌥2"),
+        ShortcutEntry(action: "Bottom Right",  shortcut: "⌃⌥3"),
+        ShortcutEntry(action: "Arrange All Windows", shortcut: "⌃⌥0"),
+    ]),
     ShortcutGroup(title: "Displays", entries: [
         ShortcutEntry(action: "Next Display",     shortcut: "⌃⌥⇧→"),
         ShortcutEntry(action: "Previous Display", shortcut: "⌃⌥⇧←"),
@@ -67,7 +79,7 @@ struct PreferencesView: View {
             Image(systemName: "rectangle.3.group")
                 .font(.title2)
                 .foregroundStyle(Color.accentColor)
-            Text("WindowManager")
+            Text("Gridly")
                 .font(.title2.weight(.semibold))
         }
         .padding(.horizontal, 20)

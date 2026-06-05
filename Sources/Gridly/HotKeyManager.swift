@@ -97,6 +97,29 @@ final class HotKeyManager {
         register(keyCode: UInt32(kVK_ANSI_E), modifiers: co) { WindowMover.moveFrontmost(to: .leftTwoThirds) }
         register(keyCode: UInt32(kVK_ANSI_T), modifiers: co) { WindowMover.moveFrontmost(to: .rightTwoThirds) }
 
+        // ── 3×3 grid (numeric keypad + top number row) ───────────────────────
+        //   7 8 9  (top)      digit → grid cell, laid out spatially on the keypad.
+        //   4 5 6  (middle)   ⌃⌥<digit> snaps the frontmost window to that cell.
+        //   1 2 3  (bottom)   ⌃⌥0 arranges *all* windows across the grid.
+        let keypadCodes: [Int: Int] = [
+            1: kVK_ANSI_Keypad1, 2: kVK_ANSI_Keypad2, 3: kVK_ANSI_Keypad3,
+            4: kVK_ANSI_Keypad4, 5: kVK_ANSI_Keypad5, 6: kVK_ANSI_Keypad6,
+            7: kVK_ANSI_Keypad7, 8: kVK_ANSI_Keypad8, 9: kVK_ANSI_Keypad9,
+        ]
+        let rowCodes: [Int: Int] = [
+            1: kVK_ANSI_1, 2: kVK_ANSI_2, 3: kVK_ANSI_3,
+            4: kVK_ANSI_4, 5: kVK_ANSI_5, 6: kVK_ANSI_6,
+            7: kVK_ANSI_7, 8: kVK_ANSI_8, 9: kVK_ANSI_9,
+        ]
+        for (digit, code) in keypadCodes {
+            register(keyCode: UInt32(code), modifiers: co) { WindowMover.moveFrontmost(to: .grid(digit)) }
+        }
+        for (digit, code) in rowCodes {
+            register(keyCode: UInt32(code), modifiers: co) { WindowMover.moveFrontmost(to: .grid(digit)) }
+        }
+        register(keyCode: UInt32(kVK_ANSI_Keypad0), modifiers: co) { WindowMover.arrangeAllToGrid() }
+        register(keyCode: UInt32(kVK_ANSI_0),       modifiers: co) { WindowMover.arrangeAllToGrid() }
+
         // ── Multi-display ────────────────────────────────────────────────────
         register(keyCode: UInt32(kVK_RightArrow), modifiers: cos) { WindowMover.moveFrontmost(to: .nextDisplay) }
         register(keyCode: UInt32(kVK_LeftArrow),  modifiers: cos) { WindowMover.moveFrontmost(to: .previousDisplay) }
