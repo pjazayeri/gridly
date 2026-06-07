@@ -50,6 +50,12 @@ private let shortcutGroups: [ShortcutGroup] = [
         ShortcutEntry(action: "Bottom Right",  shortcut: "⌃⌥3"),
         ShortcutEntry(action: "Arrange All Windows", shortcut: "⌃⌥0"),
     ]),
+    ShortcutGroup(title: "Even Tiling", entries: [
+        ShortcutEntry(action: "Split into 2 (halves)",  shortcut: "⌃⌥⇧2"),
+        ShortcutEntry(action: "Split into 3",           shortcut: "⌃⌥⇧3"),
+        ShortcutEntry(action: "Split into 4 (2×2)",     shortcut: "⌃⌥⇧4"),
+        ShortcutEntry(action: "Split into N (1–9)",     shortcut: "⌃⌥⇧#"),
+    ]),
     ShortcutGroup(title: "Displays", entries: [
         ShortcutEntry(action: "Next Display",     shortcut: "⌃⌥⇧→"),
         ShortcutEntry(action: "Previous Display", shortcut: "⌃⌥⇧←"),

@@ -41,7 +41,45 @@ enum WindowMover {
         }
     }
 
+    /// Tiles the `count` frontmost standard windows into an even grid that
+    /// fills the screen holding the focused window.  If fewer than `count`
+    /// windows exist, the grid shrinks to the number actually available so the
+    /// split never leaves empty cells.
+    static func tileFrontmost(into count: Int) {
+        guard count >= 1 else { return }
+
+        let windows = arrangeableWindowsFrontmostFirst()
+        guard let anchor = windows.first else { return }
+
+        let n = min(count, windows.count)
+        let screen = ScreenUtils.screen(containing: anchor)
+        let frames = ScreenUtils.tileFrames(count: n, on: screen)
+
+        for (window, frame) in zip(windows, frames) {
+            setFrame(of: window, to: frame)
+        }
+    }
+
     // MARK: - Private
+
+    /// Every arrangeable standard window across regular apps, with the frontmost
+    /// app's windows first so tiling starts from what the user is looking at.
+    private static func arrangeableWindowsFrontmostFirst() -> [AXUIElement] {
+        let frontPID = NSWorkspace.shared.frontmostApplication?.processIdentifier
+        let apps = NSWorkspace.shared.runningApplications
+            .filter { $0.activationPolicy == .regular }
+            .sorted { a, _ in a.processIdentifier == frontPID }
+
+        var result: [AXUIElement] = []
+        for app in apps {
+            let axApp = AXUIElementCreateApplication(app.processIdentifier)
+            var winRef: CFTypeRef?
+            guard AXUIElementCopyAttributeValue(axApp, kAXWindowsAttribute as CFString, &winRef) == .success,
+                  let windows = winRef as? [AXUIElement] else { continue }
+            result.append(contentsOf: windows.filter { isArrangeable($0) })
+        }
+        return result
+    }
 
     /// True for ordinary, non-minimized application windows (skips panels,
     /// sheets, and minimized windows so the arrange pass leaves them alone).

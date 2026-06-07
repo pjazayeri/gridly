@@ -120,6 +120,16 @@ final class HotKeyManager {
         register(keyCode: UInt32(kVK_ANSI_Keypad0), modifiers: co) { WindowMover.arrangeAllToGrid() }
         register(keyCode: UInt32(kVK_ANSI_0),       modifiers: co) { WindowMover.arrangeAllToGrid() }
 
+        // ── Even tiling (⌃⌥⇧ + N) ────────────────────────────────────────────
+        //   Splits the screen into N evenly-sized tiles and fills them with the
+        //   N frontmost windows.  ⌃⌥⇧2 → halves, ⌃⌥⇧4 → 2×2, ⌃⌥⇧9 → 3×3, etc.
+        for (digit, code) in rowCodes {
+            register(keyCode: UInt32(code), modifiers: cos) { WindowMover.tileFrontmost(into: digit) }
+        }
+        for (digit, code) in keypadCodes {
+            register(keyCode: UInt32(code), modifiers: cos) { WindowMover.tileFrontmost(into: digit) }
+        }
+
         // ── Multi-display ────────────────────────────────────────────────────
         register(keyCode: UInt32(kVK_RightArrow), modifiers: cos) { WindowMover.moveFrontmost(to: .nextDisplay) }
         register(keyCode: UInt32(kVK_LeftArrow),  modifiers: cos) { WindowMover.moveFrontmost(to: .previousDisplay) }
