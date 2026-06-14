@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gridly — Keyboard window snapping for macOS</title>
+<meta name="description" content="Gridly is a lightweight menu-bar app that snaps macOS windows into halves, quarters, thirds, a 3×3 grid, or an even N-way tile — all from the keyboard.">
+
+<!-- Open Graph -->
+<meta property="og:title" content="Gridly — Keyboard window snapping for macOS">
+<meta property="og:description" content="Snap any window into place without touching the mouse. Halves, quarters, thirds, grids, and even N-way tiling.">
+<meta property="og:type" content="website">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%231a1a29'/%3E%3Crect x='14' y='14' width='33.25' height='33.25' rx='5' fill='%235c94ff'/%3E%3Crect x='52.75' y='14' width='33.25' height='33.25' rx='5' fill='%2352d69e'/%3E%3Crect x='14' y='52.75' width='33.25' height='33.25' rx='5' fill='%23ff943f'/%3E%3Crect x='52.75' y='52.75' width='33.25' height='33.25' rx='5' fill='%23c27aff'/%3E%3C/svg%3E">
+
+<style>
+  :root {
+    --bg:        #0e0e16;
+    --bg-2:      #16161f;
+    --card:      #1a1a26;
+    --card-2:    #20202e;
+    --line:      #2a2a3a;
+    --ink:       #f4f4fa;
+    --ink-dim:   #a6a6bb;
+    --ink-faint: #6e6e84;
+    --blue:      #5c94ff;
+    --green:     #52d69e;
+    --orange:    #ff943f;
+    --purple:    #c27aff;
+    --radius:    16px;
+    --maxw:      1080px;
+    --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  a { color: inherit; text-decoration: none; }
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+
+  /* ── Nav ─────────────────────────────────────────────── */
+  nav {
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: saturate(180%) blur(20px);
+    background: rgba(14,14,22,.72);
+    border-bottom: 1px solid var(--line);
+  }
+  nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+  .brand { display: flex; align-items: center; gap: 11px; font-weight: 600; font-size: 18px; }
+  .brand .logo { width: 30px; height: 30px; }
+  .nav-links { display: flex; align-items: center; gap: 28px; }
+  .nav-links a { color: var(--ink-dim); font-size: 15px; transition: color .15s; }
+  .nav-links a:hover { color: var(--ink); }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--blue); color: #fff; font-weight: 600; font-size: 15px;
+    padding: 10px 18px; border-radius: 10px; border: none; cursor: pointer;
+    transition: transform .12s ease, box-shadow .12s ease, filter .12s ease;
+    box-shadow: 0 4px 18px -6px rgba(92,148,255,.7);
+  }
+  .btn:hover { transform: translateY(-1px); filter: brightness(1.07); }
+  .btn.ghost { background: var(--card-2); color: var(--ink); box-shadow: none; border: 1px solid var(--line); }
+  .btn.lg { padding: 14px 26px; font-size: 16px; border-radius: 12px; }
+  .btn.coffee { background: #ffdd00; color: #1a1a1a; box-shadow: 0 4px 18px -6px rgba(255,221,0,.7); }
+
+  /* ── Hero ────────────────────────────────────────────── */
+  .hero { position: relative; padding: 96px 0 80px; text-align: center; }
+  .hero::before {
+    content: ""; position: absolute; inset: 0; z-index: -1;
+    background:
+      radial-gradient(620px 320px at 50% -40px, rgba(92,148,255,.18), transparent 70%),
+      radial-gradient(520px 300px at 85% 120px, rgba(194,122,255,.12), transparent 70%),
+      radial-gradient(520px 300px at 12% 160px, rgba(82,214,158,.10), transparent 70%);
+  }
+  .hero .logo-xl { width: 104px; height: 104px; margin: 0 auto 26px; filter: drop-shadow(0 18px 40px rgba(0,0,0,.55)); }
+  .badge {
+    display: inline-block; font-size: 13px; font-weight: 600; letter-spacing: .02em;
+    color: var(--ink-dim); background: var(--card); border: 1px solid var(--line);
+    padding: 5px 13px; border-radius: 999px; margin-bottom: 22px;
+  }
+  h1 {
+    font-size: clamp(38px, 6vw, 66px); line-height: 1.05; font-weight: 700;
+    letter-spacing: -.02em; margin-bottom: 20px;
+  }
+  h1 .grad {
+    background: linear-gradient(100deg, var(--blue), var(--green) 40%, var(--orange) 70%, var(--purple));
+    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .sub { font-size: clamp(17px, 2.4vw, 21px); color: var(--ink-dim); max-width: 620px; margin: 0 auto 34px; }
+  .cta-row { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; align-items: center; }
+  .cta-note { font-size: 13px; color: var(--ink-faint); margin-top: 18px; }
+
+  /* ── Hero demo (animated snap) ───────────────────────── */
+  .demo {
+    margin: 60px auto 0; max-width: 720px;
+    background: linear-gradient(180deg, var(--bg-2), var(--card));
+    border: 1px solid var(--line); border-radius: 18px; padding: 16px;
+    box-shadow: 0 40px 90px -40px rgba(0,0,0,.8);
+  }
+  .demo-bar { display: flex; gap: 7px; padding: 4px 6px 12px; }
+  .demo-bar i { width: 11px; height: 11px; border-radius: 50%; display: block; }
+  .demo-bar i:nth-child(1){ background:#ff5f57 } .demo-bar i:nth-child(2){ background:#febc2e } .demo-bar i:nth-child(3){ background:#28c840 }
+  .screen {
+    position: relative; aspect-ratio: 16/10; background: #0b0b12;
+    border-radius: 10px; overflow: hidden; border: 1px solid #000;
+  }
+  .pane {
+    position: absolute; border-radius: 7px; opacity: .92;
+    transition: all .9s cubic-bezier(.65,.02,.2,1);
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.08);
+  }
+
+  /* ── Sections ────────────────────────────────────────── */
+  section { padding: 88px 0; }
+  .eyebrow { color: var(--blue); font-weight: 700; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; text-align: center; }
+  .h2 { font-size: clamp(28px, 4vw, 42px); font-weight: 700; letter-spacing: -.02em; text-align: center; margin: 10px 0 14px; }
+  .lead { color: var(--ink-dim); text-align: center; max-width: 560px; margin: 0 auto 56px; font-size: 17px; }
+
+  /* ── Feature cards ───────────────────────────────────── */
+  .features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .feature {
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 26px; transition: transform .15s ease, border-color .15s ease;
+  }
+  .feature:hover { transform: translateY(-3px); border-color: #38384e; }
+  .feature .ic { width: 42px; height: 42px; border-radius: 11px; display: grid; place-items: center; margin-bottom: 16px; }
+  .feature h3 { font-size: 18px; margin-bottom: 7px; }
+  .feature p { color: var(--ink-dim); font-size: 15px; }
+
+  /* ── Shortcut reference ──────────────────────────────── */
+  .layouts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .layout {
+    background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+    padding: 18px; text-align: center;
+  }
+  .mini {
+    position: relative; aspect-ratio: 16/10; background: #0b0b12; border: 1px solid var(--line);
+    border-radius: 8px; margin-bottom: 14px; overflow: hidden;
+  }
+  .mini span {
+    position: absolute; border-radius: 3px;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.10);
+  }
+  .layout h4 { font-size: 15px; margin-bottom: 4px; }
+  .kbd { font-family: var(--mono); font-size: 13px; color: var(--ink-dim); }
+  .key {
+    display: inline-block; background: var(--card-2); border: 1px solid var(--line);
+    border-bottom-width: 2px; border-radius: 6px; padding: 1px 7px; font-family: var(--mono);
+    font-size: 13px; color: var(--ink);
+  }
+
+  /* ── How to install ──────────────────────────────────── */
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; counter-reset: step; }
+  .step {
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 26px;
+    position: relative;
+  }
+  .step .num {
+    counter-increment: step; width: 30px; height: 30px; border-radius: 50%;
+    background: var(--blue); color: #fff; display: grid; place-items: center;
+    font-weight: 700; font-size: 14px; margin-bottom: 14px;
+  }
+  .step .num::before { content: counter(step); }
+  .step h3 { font-size: 17px; margin-bottom: 6px; }
+  .step p { color: var(--ink-dim); font-size: 15px; }
+  .note {
+    margin-top: 26px; display: flex; gap: 12px; align-items: flex-start;
+    background: rgba(255,148,63,.07); border: 1px solid rgba(255,148,63,.25);
+    border-radius: 12px; padding: 16px 18px; color: var(--ink-dim); font-size: 14px;
+  }
+  .note b { color: var(--orange); }
+
+  /* ── FAQ ─────────────────────────────────────────────── */
+  .faq { max-width: 760px; margin: 0 auto; display: grid; gap: 12px; }
+  details {
+    background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 4px 20px;
+  }
+  summary { cursor: pointer; font-weight: 600; padding: 16px 0; list-style: none; display: flex; justify-content: space-between; align-items: center; }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: "+"; color: var(--ink-faint); font-size: 22px; font-weight: 400; }
+  details[open] summary::after { content: "−"; }
+  details p { color: var(--ink-dim); padding: 0 0 18px; font-size: 15px; }
+
+  /* ── Final CTA ───────────────────────────────────────── */
+  .final {
+    text-align: center; background:
+      radial-gradient(600px 300px at 50% 0, rgba(92,148,255,.16), transparent 70%);
+    border-top: 1px solid var(--line);
+  }
+
+  /* ── Footer ──────────────────────────────────────────── */
+  footer { border-top: 1px solid var(--line); padding: 36px 0; color: var(--ink-faint); font-size: 14px; }
+  footer .wrap { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; }
+  footer .brand { font-size: 16px; color: var(--ink-dim); }
+
+  @media (max-width: 860px) {
+    .features, .steps { grid-template-columns: 1fr; }
+    .layouts { grid-template-columns: repeat(2, 1fr); }
+    .nav-links a:not(.btn) { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Reusable logo SVG -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="gridly-logo" viewBox="0 0 100 100">
+    <rect width="100" height="100" rx="20" fill="#1a1a29"/>
+    <rect x="14"    y="14"    width="33.25" height="33.25" rx="5" fill="#5c94ff"/>
+    <rect x="52.75" y="14"    width="33.25" height="33.25" rx="5" fill="#52d69e"/>
+    <rect x="14"    y="52.75" width="33.25" height="33.25" rx="5" fill="#ff943f"/>
+    <rect x="52.75" y="52.75" width="33.25" height="33.25" rx="5" fill="#c27aff"/>
+  </symbol>
+</svg>
+
+<nav>
+  <div class="wrap">
+    <a class="brand" href="#top"><svg class="logo"><use href="#gridly-logo"/></svg> Gridly</a>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#shortcuts">Shortcuts</a>
+      <a href="#install">Install</a>
+      <a href="#faq">FAQ</a>
+      <a class="btn" href="#download">Download</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <svg class="logo-xl"><use href="#gridly-logo"/></svg>
+    <div class="badge">Free · macOS 14 Sonoma and later</div>
+    <h1>Snap windows<br><span class="grad">without the mouse.</span></h1>
+    <p class="sub">
+      Gridly lives in your menu bar and tiles any window into halves, quarters, thirds,
+      a 3×3 grid — or an even N-way split — with a single keystroke.
+    </p>
+    <div class="cta-row">
+      <a class="btn lg" href="#download">↓ Download for macOS</a>
+      <a class="btn lg ghost" href="#shortcuts">See the shortcuts</a>
+    </div>
+    <p class="cta-note">Notarized · Apple Silicon &amp; Intel · ~2 MB · no account required</p>
+
+    <!-- Animated snap demo -->
+    <div class="demo" aria-hidden="true">
+      <div class="demo-bar"><i></i><i></i><i></i></div>
+      <div class="screen" id="screen">
+        <div class="pane" id="p1" style="background:#5c94ff"></div>
+        <div class="pane" id="p2" style="background:#52d69e"></div>
+        <div class="pane" id="p3" style="background:#ff943f"></div>
+        <div class="pane" id="p4" style="background:#c27aff"></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section id="features">
+  <div class="wrap">
+    <p class="eyebrow">Why Gridly</p>
+    <h2 class="h2">A whole layout system in your fingertips</h2>
+    <p class="lead">No dragging to screen edges, no fiddly resize handles. Focus a window, press a shortcut, done.</p>
+    <div class="features">
+      <div class="feature">
+        <div class="ic" style="background:rgba(92,148,255,.15);color:var(--blue)">⌨️</div>
+        <h3>Keyboard-first</h3>
+        <p>Every layout is a chord away. ⌃⌥ plus an arrow, letter, or number — muscle-memory in a day.</p>
+      </div>
+      <div class="feature">
+        <div class="ic" style="background:rgba(82,214,158,.15);color:var(--green)">▦</div>
+        <h3>Even N-way tiling</h3>
+        <p>Press ⌃⌥⇧ and a number to split the screen into that many equal tiles and fill them with your frontmost windows.</p>
+      </div>
+      <div class="feature">
+        <div class="ic" style="background:rgba(255,148,63,.15);color:var(--orange)">◳</div>
+        <h3>Halves &amp; quarters</h3>
+        <p>The classics: left/right/top/bottom halves and four corners, exactly where you expect them.</p>
+      </div>
+      <div class="feature">
+        <div class="ic" style="background:rgba(194,122,255,.15);color:var(--purple)">⅓</div>
+        <h3>Thirds &amp; a 3×3 grid</h3>
+        <p>Columns, two-thirds spans, and nine grid cells laid out like a numeric keypad.</p>
+      </div>
+      <div class="feature">
+        <div class="ic" style="background:rgba(92,148,255,.15);color:var(--blue)">🖥️</div>
+        <h3>Multi-display</h3>
+        <p>Fling the focused window to the next or previous screen with ⌃⌥⇧ and an arrow key.</p>
+      </div>
+      <div class="feature">
+        <div class="ic" style="background:rgba(82,214,158,.15);color:var(--green)">🪶</div>
+        <h3>Featherweight</h3>
+        <p>A tiny native menu-bar app — no dock icon, no background bloat, no telemetry. Launches at login if you like.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="shortcuts" style="background:var(--bg-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+  <div class="wrap">
+    <p class="eyebrow">Cheat sheet</p>
+    <h2 class="h2">Hold <span class="key">⌃</span> <span class="key">⌥</span>, tap a key</h2>
+    <p class="lead">A few of the layouts. The full reference lives in Gridly’s Preferences window.</p>
+    <div class="layouts" id="layouts"><!-- injected by JS --></div>
+  </div>
+</section>
+
+<section id="install">
+  <div class="wrap">
+    <p class="eyebrow">Get going</p>
+    <h2 class="h2">Up and running in a minute</h2>
+    <p class="lead">Gridly is a single app with one permission to grant.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="num"></div>
+        <h3>Download &amp; drag</h3>
+        <p>Open the <span class="kbd">.dmg</span> and drag <b>Gridly</b> into your Applications folder. Launch it — it appears in the menu bar.</p>
+      </div>
+      <div class="step">
+        <div class="num"></div>
+        <h3>Grant Accessibility</h3>
+        <p>macOS asks once. Allow Gridly under System Settings ▸ Privacy &amp; Security ▸ Accessibility so it can move windows.</p>
+      </div>
+      <div class="step">
+        <div class="num"></div>
+        <h3>Snap away</h3>
+        <p>Click a window to focus it, then press a shortcut. Open Preferences from the menu-bar icon for the full list.</p>
+      </div>
+    </div>
+    <div class="note">
+      <span>⚠️</span>
+      <div><b>Heads up:</b> Gridly needs Accessibility permission to reposition windows — that’s the only access it asks for. It can’t run sandboxed, which is why it’s distributed directly here rather than on the Mac App Store.</div>
+    </div>
+  </div>
+</section>
+
+<section id="faq" style="background:var(--bg-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+  <div class="wrap">
+    <p class="eyebrow">Questions</p>
+    <h2 class="h2">Good to know</h2>
+    <div class="faq">
+      <details open>
+        <summary>How does the even N-way split work?</summary>
+        <p>Press ⌃⌥⇧ together with a number from 1–9. Gridly carves the screen into that many equal tiles — the most square arrangement it can — and drops your frontmost windows into them. ⌃⌥⇧2 gives side-by-side halves, ⌃⌥⇧4 a 2×2 grid, ⌃⌥⇧9 a full 3×3. If you have fewer windows open than the number you pressed, the grid shrinks to fit so there are never empty gaps.</p>
+      </details>
+      <details>
+        <summary>Which Macs are supported?</summary>
+        <p>Any Mac running macOS 14 (Sonoma) or later, on both Apple Silicon and Intel.</p>
+      </details>
+      <details>
+        <summary>Why does it need Accessibility permission?</summary>
+        <p>Moving and resizing other apps’ windows is only possible through macOS’s Accessibility API. Gridly requests nothing else — no network, no files, no analytics.</p>
+      </details>
+      <details>
+        <summary>Can I change the shortcuts?</summary>
+        <p>The current build ships with a fixed, Magnet-style set of bindings (shown in Preferences). Customisable shortcuts are on the roadmap.</p>
+      </details>
+      <details>
+        <summary>Is it on the Mac App Store?</summary>
+        <p>No — the Accessibility API is incompatible with App Store sandboxing, so Gridly is distributed as a notarized direct download.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section class="final" id="download">
+  <div class="wrap">
+    <svg class="logo-xl" style="width:80px;height:80px;margin-bottom:18px"><use href="#gridly-logo"/></svg>
+    <h2 class="h2">Get Gridly</h2>
+    <p class="lead">Free, notarized, and about two megabytes. Your windows will thank you.</p>
+    <div class="cta-row">
+      <a class="btn lg" href="#" id="download-link">↓ Download Gridly 1.0</a>
+      <a class="btn lg coffee" href="https://buymeacoffee.com/neemascoffee" target="_blank" rel="noopener">☕ Buy me a coffee</a>
+    </div>
+    <p class="cta-note">Gridly is free — if it saves you time, a coffee is always appreciated. Replace the download link with your DMG and the coffee link with your Buy Me a Coffee handle.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <a class="brand" href="#top"><svg class="logo" style="width:22px;height:22px"><use href="#gridly-logo"/></svg> Gridly</a>
+    <a href="https://buymeacoffee.com/neemascoffee" target="_blank" rel="noopener">☕ Buy me a coffee</a>
+    <div>© 2026 Gridly · Keyboard window snapping for macOS</div>
+  </div>
+</footer>
+
+<script>
+  // ── Cheat-sheet layouts (fractional rects, top-left origin) ──
+  const C = { blue:'#5c94ff', green:'#52d69e', orange:'#ff943f', purple:'#c27aff' };
+  const layouts = [
+    { title:'Left Half',  keys:'⌃⌥←',   panes:[[0,0,.5,1,C.blue]] },
+    { title:'Quarters',   keys:'⌃⌥U I J K', panes:[[0,0,.5,.5,C.blue],[.5,0,.5,.5,C.green],[0,.5,.5,.5,C.orange],[.5,.5,.5,.5,C.purple]] },
+    { title:'Left Third', keys:'⌃⌥D',   panes:[[0,0,1/3,1,C.green]] },
+    { title:'3×3 Grid',   keys:'⌃⌥1–9', panes:(()=>{const a=[],c=[C.blue,C.green,C.orange,C.purple];let i=0;for(let y=0;y<3;y++)for(let x=0;x<3;x++)a.push([x/3,y/3,1/3,1/3,c[i++%4]]);return a;})() },
+    { title:'Split into 2', keys:'⌃⌥⇧2', panes:[[0,0,.5,1,C.blue],[.5,0,.5,1,C.green]] },
+    { title:'Split into 3', keys:'⌃⌥⇧3', panes:[[0,0,1/3,1,C.blue],[1/3,0,1/3,1,C.green],[2/3,0,1/3,1,C.orange]] },
+    { title:'Split into 4', keys:'⌃⌥⇧4', panes:[[0,0,.5,.5,C.blue],[.5,0,.5,.5,C.green],[0,.5,.5,.5,C.orange],[.5,.5,.5,.5,C.purple]] },
+    { title:'Maximize',     keys:'⌃⌥↩',  panes:[[0,0,1,1,C.purple]] },
+  ];
+  const PAD = 5; // % inset inside each mini screen
+  function miniHTML(panes){
+    return panes.map(([x,y,w,h,col])=>{
+      const gap = 2.2;
+      const left = PAD + x*(100-2*PAD) + gap/2;
+      const top  = PAD + y*(100-2*PAD) + gap/2;
+      const wd   = w*(100-2*PAD) - gap;
+      const ht   = h*(100-2*PAD) - gap;
+      return `<span style="left:${left}%;top:${top}%;width:${wd}%;height:${ht}%;background:${col};opacity:.9"></span>`;
+    }).join('');
+  }
+  document.getElementById('layouts').innerHTML = layouts.map(l => `
+    <div class="layout">
+      <div class="mini">${miniHTML(l.panes)}</div>
+      <h4>${l.title}</h4>
+      <div class="kbd">${l.keys}</div>
+    </div>`).join('');
+
+  // ── Hero demo: cycle through a few layouts ──
+  const P = ['p1','p2','p3','p4'].map(id => document.getElementById(id));
+  const G = 2; // % gap
+  function place(el, x, y, w, h, show=true){
+    el.style.left = x+'%'; el.style.top = y+'%';
+    el.style.width = w+'%'; el.style.height = h+'%';
+    el.style.opacity = show ? .92 : 0;
+  }
+  const frames = [
+    () => { // halves + stack
+      place(P[0], G, G, 50-1.5*G, 100-2*G);
+      place(P[1], 50+G/2, G, 50-1.5*G, 50-1.5*G);
+      place(P[2], 50+G/2, 50+G/2, 50-1.5*G, 50-1.5*G);
+      place(P[3], 0,0,0,0,false);
+    },
+    () => { // 2x2
+      place(P[0], G, G, 50-1.5*G, 50-1.5*G);
+      place(P[1], 50+G/2, G, 50-1.5*G, 50-1.5*G);
+      place(P[2], G, 50+G/2, 50-1.5*G, 50-1.5*G);
+      place(P[3], 50+G/2, 50+G/2, 50-1.5*G, 50-1.5*G);
+    },
+    () => { // thirds
+      place(P[0], G, G, 100/3-1.5*G, 100-2*G);
+      place(P[1], 100/3+G/2, G, 100/3-G, 100-2*G);
+      place(P[2], 200/3+G/2, G, 100/3-1.5*G, 100-2*G);
+      place(P[3], 0,0,0,0,false);
+    },
+  ];
+  let fi = 0;
+  function tick(){ frames[fi % frames.length](); fi++; }
+  tick();
+  setInterval(tick, 2200);
+</script>
+</body>
+</html>
