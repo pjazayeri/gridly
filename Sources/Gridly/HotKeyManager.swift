@@ -1,4 +1,5 @@
 import Carbon.HIToolbox
+import Foundation
 
 // File-scope storage accessible from the @convention(c) event handler
 private var hotkeyCallbacks: [UInt32: () -> Void] = [:]
@@ -71,11 +72,11 @@ final class HotKeyManager {
         // ⌃⌥⇧ (Control + Option + Shift)
         let cos = UInt32(controlKey | optionKey | shiftKey)
 
-        // ── Halves ──────────────────────────────────────────────────────────
-        register(keyCode: UInt32(kVK_LeftArrow),  modifiers: co)  { WindowMover.moveFrontmost(to: .leftHalf) }
-        register(keyCode: UInt32(kVK_RightArrow), modifiers: co)  { WindowMover.moveFrontmost(to: .rightHalf) }
-        register(keyCode: UInt32(kVK_UpArrow),    modifiers: co)  { WindowMover.moveFrontmost(to: .topHalf) }
-        register(keyCode: UInt32(kVK_DownArrow),  modifiers: co)  { WindowMover.moveFrontmost(to: .bottomHalf) }
+        // ── Halves (double-tap an arrow → throw to the monitor that way) ──────
+        register(keyCode: UInt32(kVK_LeftArrow),  modifiers: co)  { [weak self] in self?.handleArrow(.left,  half: .leftHalf) }
+        register(keyCode: UInt32(kVK_RightArrow), modifiers: co)  { [weak self] in self?.handleArrow(.right, half: .rightHalf) }
+        register(keyCode: UInt32(kVK_UpArrow),    modifiers: co)  { [weak self] in self?.handleArrow(.up,    half: .topHalf) }
+        register(keyCode: UInt32(kVK_DownArrow),  modifiers: co)  { [weak self] in self?.handleArrow(.down,  half: .bottomHalf) }
 
         // ── Fullscreen ───────────────────────────────────────────────────────
         register(keyCode: UInt32(kVK_Return),     modifiers: co)  { WindowMover.moveFrontmost(to: .maximize) }
@@ -133,5 +134,31 @@ final class HotKeyManager {
         // ── Multi-display ────────────────────────────────────────────────────
         register(keyCode: UInt32(kVK_RightArrow), modifiers: cos) { WindowMover.moveFrontmost(to: .nextDisplay) }
         register(keyCode: UInt32(kVK_LeftArrow),  modifiers: cos) { WindowMover.moveFrontmost(to: .previousDisplay) }
+    }
+
+    // MARK: - Arrow double-tap
+
+    /// Max gap between two taps of the same arrow to count as a double-tap.
+    private let arrowDoubleTapInterval: TimeInterval = 0.30
+    private var lastArrowDirection: ScreenDirection?
+    private var lastArrowTime: TimeInterval = 0
+
+    /// First ⌃⌥ + arrow tap snaps to `half`; a second tap of the same arrow
+    /// within `arrowDoubleTapInterval` throws the window to the monitor in
+    /// `direction` instead. Runs on the main thread (Carbon event loop), so the
+    /// shared state needs no locking.
+    private func handleArrow(_ direction: ScreenDirection, half: SnapPosition) {
+        let now = ProcessInfo.processInfo.systemUptime
+        let isDoubleTap = (direction == lastArrowDirection) &&
+                          (now - lastArrowTime <= arrowDoubleTapInterval)
+
+        if isDoubleTap {
+            WindowMover.moveFocusedToAdjacentDisplay(direction: direction)
+            lastArrowDirection = nil          // consume, so a third tap snaps again
+        } else {
+            WindowMover.moveFrontmost(to: half)
+            lastArrowDirection = direction
+            lastArrowTime = now
+        }
     }
 }

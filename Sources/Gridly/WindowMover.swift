@@ -41,6 +41,16 @@ enum WindowMover {
         }
     }
 
+    /// Moves the focused window to the display physically in `direction`
+    /// (above / below / left / right), preserving its relative size and
+    /// position. No-op if there is no display that way (e.g. a single screen).
+    static func moveFocusedToAdjacentDisplay(direction: ScreenDirection) {
+        guard let window = focusedWindow() else { return }
+        let current = ScreenUtils.screen(containing: window)
+        guard let target = ScreenUtils.adjacentScreen(of: current, in: direction) else { return }
+        reposition(window, from: current, to: target)
+    }
+
     /// Tiles the `count` frontmost standard windows into an even grid that
     /// fills the screen holding the focused window.  If fewer than `count`
     /// windows exist, the grid shrinks to the number actually available so the
@@ -119,12 +129,18 @@ enum WindowMover {
     }
 
     private static func moveToAdjacentDisplay(_ window: AXUIElement, forward: Bool) {
-        let currentScreen = ScreenUtils.screen(containing: window)
-        let targetScreen  = forward
-            ? ScreenUtils.nextScreen(after: currentScreen)
-            : ScreenUtils.previousScreen(before: currentScreen)
+        let current = ScreenUtils.screen(containing: window)
+        let target  = forward
+            ? ScreenUtils.nextScreen(after: current)
+            : ScreenUtils.previousScreen(before: current)
+        reposition(window, from: current, to: target)
+    }
 
-        guard targetScreen != currentScreen else { return }
+    /// Moves `window` from `src` to `dst`, keeping its size and its position
+    /// relative to the screen's visible frame (a left-half window stays a
+    /// left-half window on the destination display).
+    private static func reposition(_ window: AXUIElement, from src: NSScreen, to dst: NSScreen) {
+        guard src != dst else { return }
 
         // Read current position and size
         var posRef:  CFTypeRef?
@@ -143,15 +159,15 @@ enum WindowMover {
 
         // Relative position of the window within the current screen's visible frame
         // (working in NSScreen bottom-left coords for clarity)
-        let src = currentScreen.visibleFrame
-        let dst = targetScreen.visibleFrame
+        let srcF = src.visibleFrame
+        let dstF = dst.visibleFrame
 
         let nsWindowY = mainH - axPos.y - axSize.height   // convert AX → NS y
-        let relX = (axPos.x      - src.minX) / src.width
-        let relY = (nsWindowY    - src.minY) / src.height
+        let relX = (axPos.x   - srcF.minX) / srcF.width
+        let relY = (nsWindowY - srcF.minY) / srcF.height
 
-        let newNsX = dst.minX + relX * dst.width
-        let newNsY = dst.minY + relY * dst.height
+        let newNsX = dstF.minX + relX * dstF.width
+        let newNsY = dstF.minY + relY * dstF.height
         let newAxY = mainH - newNsY - axSize.height
 
         var newOrigin = CGPoint(x: newNsX, y: newAxY)

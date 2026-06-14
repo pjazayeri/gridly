@@ -68,10 +68,14 @@ private let shortcutGroups: [ShortcutGroup] = [
         ShortcutEntry(action: "Split into 4 (2×2)",    shortcut: "⌃⌥⇧4", symbol: "square.grid.2x2"),
         ShortcutEntry(action: "Split into N (1–9)",    shortcut: "⌃⌥⇧#", symbol: "square.grid.3x3"),
     ], note: "Tiles your N frontmost windows to fill the screen evenly."),
-    ShortcutGroup(title: "Displays", entries: [
-        ShortcutEntry(action: "Next Display",     shortcut: "⌃⌥⇧→", symbol: "arrow.right.square"),
-        ShortcutEntry(action: "Previous Display", shortcut: "⌃⌥⇧←", symbol: "arrow.left.square"),
-    ], note: "Requires a second display connected."),
+    ShortcutGroup(title: "Move Between Displays", entries: [
+        ShortcutEntry(action: "Monitor Above", shortcut: "⌃⌥↑↑", symbol: "arrow.up.square"),
+        ShortcutEntry(action: "Monitor Below", shortcut: "⌃⌥↓↓", symbol: "arrow.down.square"),
+        ShortcutEntry(action: "Monitor Left",  shortcut: "⌃⌥←←", symbol: "arrow.left.square"),
+        ShortcutEntry(action: "Monitor Right", shortcut: "⌃⌥→→", symbol: "arrow.right.square"),
+        ShortcutEntry(action: "Next Display",     shortcut: "⌃⌥⇧→", symbol: "rectangle.on.rectangle"),
+        ShortcutEntry(action: "Previous Display", shortcut: "⌃⌥⇧←", symbol: "rectangle.on.rectangle"),
+    ], note: "Double-tap an arrow (keep ⌃⌥ held) to throw the window to the monitor in that direction. Requires a second display."),
 ]
 
 // MARK: - Root view

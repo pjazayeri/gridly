@@ -20,6 +20,9 @@ enum SnapPosition {
     case nextDisplay, previousDisplay
 }
 
+/// A physical direction from one display to an adjacent one.
+enum ScreenDirection { case up, down, left, right }
+
 enum ScreenUtils {
     // MARK: - Snap frame calculation
 
@@ -155,6 +158,40 @@ enum ScreenUtils {
         let screens = NSScreen.screens
         guard let idx = screens.firstIndex(of: screen) else { return screen }
         return screens[(idx - 1 + screens.count) % screens.count]
+    }
+
+    /// The display physically adjacent to `screen` in the given direction, or
+    /// nil if there is none (e.g. only one display, or nothing in that
+    /// direction). A candidate must lie on the correct side and have that axis
+    /// as its dominant offset; among candidates the nearest center wins.
+    /// Works in NSScreen coords (bottom-left origin): up = +y, right = +x.
+    static func adjacentScreen(of screen: NSScreen, in direction: ScreenDirection) -> NSScreen? {
+        let from = CGPoint(x: screen.frame.midX, y: screen.frame.midY)
+
+        var best: NSScreen?
+        var bestDistance = CGFloat.greatestFiniteMagnitude
+
+        for other in NSScreen.screens where other != screen {
+            let to = CGPoint(x: other.frame.midX, y: other.frame.midY)
+            let dx = to.x - from.x
+            let dy = to.y - from.y
+
+            let matches: Bool
+            switch direction {
+            case .up:    matches = dy > 0 && abs(dy) >= abs(dx)
+            case .down:  matches = dy < 0 && abs(dy) >= abs(dx)
+            case .left:  matches = dx < 0 && abs(dx) >= abs(dy)
+            case .right: matches = dx > 0 && abs(dx) >= abs(dy)
+            }
+            guard matches else { continue }
+
+            let distance = dx * dx + dy * dy
+            if distance < bestDistance {
+                bestDistance = distance
+                best = other
+            }
+        }
+        return best
     }
 
     // MARK: - Helpers
