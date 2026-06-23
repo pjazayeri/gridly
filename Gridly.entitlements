@@ -5,7 +5,7 @@
     <!--
         The Accessibility API (AXUIElement) is incompatible with App Sandbox.
         This app cannot be distributed via the Mac App Store for this reason —
-        the same restriction that applies to Magnet and all window managers.
+        the same restriction that applies to all window managers.
     -->
     <key>com.apple.security.app-sandbox</key>
     <false/>

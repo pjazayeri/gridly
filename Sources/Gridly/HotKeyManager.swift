@@ -64,7 +64,7 @@ final class HotKeyManager {
         }
     }
 
-    // MARK: - Magnet default bindings
+    // MARK: - Default bindings
 
     func registerAll() {
         // ⌃⌥  (Control + Option)
