@@ -9,6 +9,8 @@ VERSION  := $(shell /usr/libexec/PlistBuddy -c "Print CFBundleShortVersionString
 #   NOTARIZE_PROFILE=<profile-name>  (created via: make notarize-store-creds)
 # Option B: pass inline each time:
 #   APPLE_TEAM_ID, APPLE_ID, APPLE_PASSWORD (app-specific password)
+# Gridly Apple Developer team (override on the CLI with APPLE_TEAM_ID=... if needed)
+APPLE_TEAM_ID    ?= K4M9VUR5D5
 TEAM_ID          ?= $(APPLE_TEAM_ID)
 NOTARIZE_PROFILE ?=
 ifdef NOTARIZE_PROFILE
