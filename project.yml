@@ -35,4 +35,11 @@ targets:
           #   CODE_SIGN_IDENTITY: "Developer ID Application"
           #   CODE_SIGNING_REQUIRED: "YES"
           CODE_SIGN_STYLE: Manual
+          # Required for Apple notarization of a Developer ID build:
+          #   - hardened runtime enabled
+          #   - secure (RFC-3161) timestamp in the signature
+          #   - no get-task-allow entitlement (would be auto-injected otherwise)
+          ENABLE_HARDENED_RUNTIME: "YES"
+          OTHER_CODE_SIGN_FLAGS: "--timestamp"
+          CODE_SIGN_INJECT_BASE_ENTITLEMENTS: "NO"
     scheme: {}

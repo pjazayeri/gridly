@@ -104,9 +104,7 @@ dmg:
 	  -ov -format UDZO \
 	  "$(DMG_PATH)"
 	rm -rf "$(BUILD)/dmg-staging"
-	@test -n "$(TEAM_ID)" && \
-	  codesign --sign "Developer ID Application: $(TEAM_ID)" "$(DMG_PATH)" || \
-	  codesign --sign "Developer ID Application" "$(DMG_PATH)"
+	codesign --force --timestamp --sign "Developer ID Application" "$(DMG_PATH)"
 	@echo "✓ Created and signed $(DMG_PATH)"
 
 notarize:
